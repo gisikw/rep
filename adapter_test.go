@@ -61,6 +61,47 @@ func TestCursorAdapter_InlinesSystemPrompt(t *testing.T) {
 	}
 }
 
+func TestOpencodeAdapter_Build(t *testing.T) {
+	a := OpencodeAdapter{}
+	cmd := a.Build(InvokeRequest{
+		Prompt: "hello world",
+		Model:  "ollama/qwen2.5-coder:32b",
+		Dir:    "/tmp",
+	})
+
+	args := cmd.Args[1:]
+	if args[0] != "run" {
+		t.Errorf("first arg = %q, want 'run'", args[0])
+	}
+	assertContains(t, args, "--model")
+	assertContains(t, args, "ollama/qwen2.5-coder:32b")
+	// Prompt should be the last arg
+	if args[len(args)-1] != "hello world" {
+		t.Errorf("last arg = %q, want prompt", args[len(args)-1])
+	}
+	if cmd.Dir != "/tmp" {
+		t.Errorf("dir = %q, want /tmp", cmd.Dir)
+	}
+}
+
+func TestOpencodeAdapter_NoModel(t *testing.T) {
+	a := OpencodeAdapter{}
+	cmd := a.Build(InvokeRequest{
+		Prompt: "hello",
+	})
+
+	args := cmd.Args[1:]
+	for _, arg := range args {
+		if arg == "--model" {
+			t.Error("should not include --model when none specified")
+		}
+	}
+	// Should be: run hello
+	if len(args) != 2 || args[0] != "run" || args[1] != "hello" {
+		t.Errorf("args = %v, want [run hello]", args)
+	}
+}
+
 func TestGetAdapter_Defaults(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -68,6 +109,7 @@ func TestGetAdapter_Defaults(t *testing.T) {
 	}{
 		{"claude", "main.ClaudeAdapter"},
 		{"cursor", "main.CursorAdapter"},
+		{"opencode", "main.OpencodeAdapter"},
 		{"unknown", "main.GenericAdapter"},
 	}
 	for _, tt := range tests {
@@ -102,6 +144,8 @@ func typeName(v interface{}) string {
 		return "main.ClaudeAdapter"
 	case CursorAdapter:
 		return "main.CursorAdapter"
+	case OpencodeAdapter:
+		return "main.OpencodeAdapter"
 	case GenericAdapter:
 		return "main.GenericAdapter"
 	default:

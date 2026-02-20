@@ -39,8 +39,8 @@ func providerBinaries(name string) []string {
 		return []string{"claude"}
 	case "cursor":
 		return []string{"cursor-agent", "agent"}
-	case "ollama":
-		return []string{"ollama"}
+	case "opencode":
+		return []string{"opencode"}
 	default:
 		return []string{name}
 	}

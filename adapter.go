@@ -27,6 +27,8 @@ func GetAdapter(provider string) Adapter {
 		return ClaudeAdapter{}
 	case "cursor":
 		return CursorAdapter{}
+	case "opencode":
+		return OpencodeAdapter{}
 	default:
 		return GenericAdapter{Binary: provider}
 	}
@@ -88,6 +90,23 @@ func resolveCursorBin() string {
 		return path
 	}
 	return "cursor-agent"
+}
+
+// OpencodeAdapter builds commands for the OpenCode CLI.
+type OpencodeAdapter struct{}
+
+func (a OpencodeAdapter) Build(req InvokeRequest) *exec.Cmd {
+	args := []string{"run"}
+	if req.Model != "" {
+		args = append(args, "--model", req.Model)
+	}
+	args = append(args, req.Prompt)
+
+	cmd := exec.Command("opencode", args...)
+	if req.Dir != "" {
+		cmd.Dir = req.Dir
+	}
+	return cmd
 }
 
 // GenericAdapter treats the provider name as a binary and passes claude-style flags.

@@ -26,7 +26,7 @@ func TestProviderBinaries(t *testing.T) {
 	}{
 		{"claude", []string{"claude"}},
 		{"cursor", []string{"cursor-agent", "agent"}},
-		{"ollama", []string{"ollama"}},
+		{"opencode", []string{"opencode"}},
 		{"custom", []string{"custom"}},
 	}
 	for _, tt := range tests {
