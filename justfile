@@ -9,3 +9,8 @@ test:
 # Build the binary
 build:
     go build -o crane .
+
+# Install to ~/.local/bin (symlink to built binary)
+install: build
+    mkdir -p ~/.local/bin
+    ln -sf {{justfile_directory()}}/crane ~/.local/bin/crane
