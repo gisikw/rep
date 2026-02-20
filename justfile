@@ -4,8 +4,8 @@ default:
 
 # Run the test suite
 test:
-    echo "TODO: configure test command"
+    go test -v -count=1 ./...
 
-# Build the project
+# Build the binary
 build:
-    echo "TODO: configure build command"
+    go build -o crane .
