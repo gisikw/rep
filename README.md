@@ -1,6 +1,6 @@
 # crane
 
-A thin CLI dispatcher for headless AI agent invocations. Crane normalizes the interface across agent providers (Claude Code, Cursor, Ollama, etc.), picks the best available one based on a preference list, and gets out of the way.
+A thin CLI dispatcher for headless AI agent invocations. Crane normalizes the interface across agent providers (Claude Code, Cursor, OpenCode, etc.), picks the best available one based on a preference list, and gets out of the way.
 
 ## Usage
 
@@ -8,6 +8,7 @@ A thin CLI dispatcher for headless AI agent invocations. Crane normalizes the in
 crane "refactor the auth module to use JWT"
 echo "fix the failing test in user_test.go" | crane
 crane --provider claude --model opus "review this PR"
+crane --provider opencode --model "ollama/qwen3:32b" "fix the build"
 crane --dir /path/to/project "run the tests and fix failures"
 ```
 
@@ -17,7 +18,7 @@ Crane reads `~/.config/crane/config.toml`:
 
 ```toml
 # Provider preference order — first available wins
-providers = ["cursor", "claude", "ollama"]
+providers = ["claude", "cursor", "opencode"]
 
 # Per-provider defaults
 [claude]
@@ -27,26 +28,28 @@ allow_all = true
 [cursor]
 allow_all = true
 
-[ollama]
-model = "qwen2.5-coder:32b"
+[opencode]
+model = "ollama/qwen3-coder-next:latest"
 ```
 
 ## Provider Support
 
-| Provider | Binary | Status |
-|----------|--------|--------|
-| Claude Code | `claude` | Supported |
-| Cursor | `cursor-agent` / `agent` | Supported |
-| Ollama | TBD | Planned |
+| Provider | Binary | Notes |
+|----------|--------|-------|
+| Claude Code | `claude` | Subscription-compliant invocation via official CLI |
+| Cursor | `cursor-agent` / `agent` | Subscription-compliant invocation via official CLI |
+| OpenCode | `opencode` | Local/remote models via Ollama, OpenRouter, etc. |
+
+OpenCode handles tool calls and agentic workflows for models that don't have their own CLI harness. Configure the model endpoint (e.g. a remote Ollama server) in OpenCode's own config at `~/.config/opencode/config.json`.
 
 ## Install
 
 ```bash
-go install github.com/gisikw/crane@latest
+just install   # builds and symlinks to ~/.local/bin
 ```
 
-Or with Nix:
+Or build manually:
 
 ```bash
-nix build
+just build     # produces ./crane
 ```
