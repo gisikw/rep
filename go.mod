@@ -1,4 +1,4 @@
-module github.com/gisikw/crane
+module github.com/gisikw/rep
 
 go 1.25.4
 

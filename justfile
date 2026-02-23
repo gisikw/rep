@@ -8,9 +8,9 @@ test:
 
 # Build the binary
 build:
-    go build -o crane .
+    go build -o rep .
 
 # Install to ~/.local/bin (symlink to built binary)
 install: build
     mkdir -p ~/.local/bin
-    ln -sf {{justfile_directory()}}/crane ~/.local/bin/crane
+    ln -sf {{justfile_directory()}}/rep ~/.local/bin/rep

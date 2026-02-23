@@ -1,20 +1,20 @@
-# crane
+# rep
 
-A thin CLI dispatcher for headless AI agent invocations. Crane normalizes the interface across agent providers (Claude Code, Cursor, OpenCode, etc.), picks the best available one based on a preference list, and gets out of the way.
+A thin CLI dispatcher for headless AI agent invocations. Rep normalizes the interface across agent providers (Claude Code, Cursor, OpenCode, etc.), picks the best available one based on a preference list, and gets out of the way.
 
 ## Usage
 
 ```bash
-crane "refactor the auth module to use JWT"
-echo "fix the failing test in user_test.go" | crane
-crane --provider claude --model opus "review this PR"
-crane --provider opencode --model "ollama/qwen3:32b" "fix the build"
-crane --dir /path/to/project "run the tests and fix failures"
+rep "refactor the auth module to use JWT"
+echo "fix the failing test in user_test.go" | rep
+rep --provider claude --model opus "review this PR"
+rep --provider opencode --model "ollama/qwen3:32b" "fix the build"
+rep --dir /path/to/project "run the tests and fix failures"
 ```
 
 ## Configuration
 
-Crane reads `~/.config/crane/config.toml`:
+Rep reads `~/.config/rep/config.toml`:
 
 ```toml
 # Provider preference order — first available wins
@@ -51,5 +51,5 @@ just install   # builds and symlinks to ~/.local/bin
 Or build manually:
 
 ```bash
-just build     # produces ./crane
+just build     # produces ./rep
 ```

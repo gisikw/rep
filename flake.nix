@@ -1,5 +1,5 @@
 {
-  description = "crane — headless agent dispatcher";
+  description = "rep — headless agent dispatcher";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -13,7 +13,7 @@
       in
       {
         packages.default = pkgs.buildGoModule {
-          pname = "crane";
+          pname = "rep";
           version = "0.1.0";
           src = ./.;
           vendorHash = null; # Update after first build
@@ -23,7 +23,7 @@
           packages = with pkgs; [ go gopls just ];
 
           shellHook = ''
-            echo "crane dev shell"
+            echo "rep dev shell"
             echo "  just test    — run tests"
             echo "  just build   — build binary"
           '';

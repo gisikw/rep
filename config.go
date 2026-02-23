@@ -7,7 +7,7 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-// Config holds crane's configuration.
+// Config holds rep's configuration.
 type Config struct {
 	Providers []string                   `toml:"providers"`
 	Provider  map[string]ProviderOptions `toml:"provider"`
@@ -27,7 +27,7 @@ func (c Config) ProviderConfig(name string) ProviderOptions {
 	return c.Provider[name]
 }
 
-// LoadConfig reads ~/.config/crane/config.toml. Returns defaults if missing.
+// LoadConfig reads ~/.config/rep/config.toml. Returns defaults if missing.
 func LoadConfig() (Config, error) {
 	cfg := Config{
 		Providers: []string{"claude"},
@@ -38,7 +38,7 @@ func LoadConfig() (Config, error) {
 		return cfg, nil // Use defaults
 	}
 
-	path := filepath.Join(home, ".config", "crane", "config.toml")
+	path := filepath.Join(home, ".config", "rep", "config.toml")
 	data, err := os.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {

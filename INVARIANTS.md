@@ -8,18 +8,18 @@ Don't just ignore it.
 
 ## Core Model
 
-- Crane is a dispatcher, not an orchestrator. It picks a provider, invokes it, returns the result. No multi-step pipelines, no state between invocations, no retry logic.
-- Provider selection is config-driven, not dynamic. A config file says "prefer cursor, fall back to claude, then ollama." Crane walks the list until one works.
-- "Works" means the binary exists and is callable. Crane does not check token budgets, subscription status, or API quotas — that's a future concern and will be a separate mechanism if/when it matters.
-- Crane does not interpret agent output. It captures stdout/stderr and exit code. The caller decides what to do with it.
+- Rep is a dispatcher, not an orchestrator. It picks a provider, invokes it, returns the result. No multi-step pipelines, no state between invocations, no retry logic.
+- Provider selection is config-driven, not dynamic. A config file says "prefer cursor, fall back to claude, then opencode." Rep walks the list until one works.
+- "Works" means the binary exists and is callable. Rep does not check token budgets, subscription status, or API quotas — that's a future concern and will be a separate mechanism if/when it matters.
+- Rep does not interpret agent output. It captures stdout/stderr and exit code. The caller decides what to do with it.
 
 ## Interface
 
-- Single binary, single command: `crane "do the thing"` — prompt on argv or stdin
+- Single binary, single command: `rep "do the thing"` — prompt on argv or stdin
 - Flags for overrides: `--provider`, `--model`, `--dir`, `--system-prompt`
-- Config file at `~/.config/crane/config.toml` for provider preference and defaults
-- Exit code mirrors the agent's exit code. Crane's own errors are exit code 1 with a message on stderr.
-- Output goes to stdout unmodified. Crane's own diagnostics go to stderr.
+- Config file at `~/.config/rep/config.toml` for provider preference and defaults
+- Exit code mirrors the agent's exit code. Rep's own errors are exit code 1 with a message on stderr.
+- Output goes to stdout unmodified. Rep's own diagnostics go to stderr.
 
 ## Provider Adapters
 
